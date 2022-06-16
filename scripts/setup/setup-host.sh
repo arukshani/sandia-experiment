@@ -2,18 +2,20 @@
 
 cd "$(dirname "$0")"
 
-. ../shared.sh
-IFACE=$(get_iface)
-IFACE_CX5=$(get_cx5_iface)
+# . ../shared.sh
+# IFACE=$(get_iface)
+# IFACE_CX5=$(get_cx5_iface)
+
+IFACE=ens1f0
 
 declare -A HOST2IP=(
-    ["yeti-04"]="10.0.0.101"
-    ["yak-03"]="10.0.0.102"
+    ["node2"]="10.0.0.101"
+    ["node1"]="10.0.0.102"
 )
 
 declare -A HOST2MAC=(
-    ["yeti-04"]="ec:0d:9a:68:21:a8"
-    ["yak-03"]="ec:0d:9a:68:21:c0"
+    ["node2"]="ec:0d:9a:68:21:a8"
+    ["node1"]="ec:0d:9a:68:21:c0"
 )
 
 MY_HOST=$(hostname -s)
@@ -214,33 +216,34 @@ sigcomm21_host_network_stack_optimization()
 
 main()
 {
-    sudo ip link set $IFACE up
-    set_ip
-    # run_arp
-    # sudo ethtool --set-priv-flags $IFACE sniffer off
-    sudo ip link set $IFACE mtu $MTU
+    sudo ip link set $IFACE up 
+    set_ip 
+    # # run_arp
+    # # sudo ethtool --set-priv-flags $IFACE sniffer off
+    sudo ip link set $IFACE mtu $MTU 
 
-    # performance tuning
-    set_cpu_high_performance
-    # disable_hyperthreading
-    enable_hyperthreading
-    disable_daemon_processes
+    # # performance tuning (Setting the GOVERNOR="performance" is not energy efficient I think so didn't do this on cloudlab)
+    # set_cpu_high_performance
+    # # disable_hyperthreading
+    enable_hyperthreading 
+    # disable_daemon_processes (Didnt do this either since I need to understand what each of them do)
 
-    if [[ "$IFACE" == "$IFACE_CX5" ]]; then
-        # set_mlnx_qos
-        set_mellanox_cx5_pci_settings
-        reset_nic_irq_mapping
-        mellanox_perf_tuning
-        sigcomm21_host_network_stack_optimization
-        # Explicitly turning off TSO for now, for fair comparison between CX-5 and Corundum
-        sudo ethtool -K $IFACE tso off
-        sudo ethtool -K $IFACE gso on
-    else
-        sudo ethtool -K $IFACE gso on
-    fi
+    #(Let's first go with default settings)
+    # if [[ "$IFACE" == "$IFACE_CX5" ]]; then
+    #     # set_mlnx_qos
+    #     set_mellanox_cx5_pci_settings 
+    #     reset_nic_irq_mapping 
+    #     mellanox_perf_tuning
+    #     sigcomm21_host_network_stack_optimization
+    #     # Explicitly turning off TSO for now, for fair comparison between CX-5 and Corundum
+    #     sudo ethtool -K $IFACE tso off
+    #     sudo ethtool -K $IFACE gso on
+    # else
+    #     sudo ethtool -K $IFACE gso on
+    # fi
 }
 
 # set -e
-#set -x
+# set -x
 main
 
