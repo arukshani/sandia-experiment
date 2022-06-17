@@ -2,7 +2,7 @@
 
 cd "$(dirname "$0")"
 
-. ../shared.sh
+# . ../shared.sh
 # IFACE=$(get_iface)
 # IFACE_CX5=$(get_cx5_iface)
 IFACE=ens1f0

@@ -20,9 +20,9 @@ sudo ./mlnxofedinstall --upstream-libs
 # sudo /etc/init.d/openibd restart
 
 # Install Mellanxo IRQ affinity tools if needed. Modern OFED often includes these tools.
-if ! [ -x "`command -v set_irq_affinity_bynode.sh`" ]; then
-    wget http://www.mellanox.com/relateddocs/prod_software/mlnx_irq_affinity.tgz
-    tar xzf mlnx_irq_affinity.tgz --directory=/usr/sbin/ --overwrite
-fi
+# if ! [ -x "`command -v set_irq_affinity_bynode.sh`" ]; then
+#     wget http://www.mellanox.com/relateddocs/prod_software/mlnx_irq_affinity.tgz
+#     tar xzf mlnx_irq_affinity.tgz --directory=/usr/sbin/ --overwrite
+# fi
 
 cd "$cwd"
