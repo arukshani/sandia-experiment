@@ -3,7 +3,8 @@
 cwd="$(pwd)"
 cd "$(dirname "$0")"
 
-sudo apt-get -y install zsh net-tools iperf3 numactl
+sudo apt-get -y install zsh net-tools iperf3 numactl gawk
+# sudo apt-get install -y gawk
 
 tempdir=$(mktemp -d)
 cd $tempdir
@@ -16,7 +17,7 @@ tar zxf MLNX_OFED_LINUX-5.5-1.0.3.2-ubuntu20.04-x86_64.tgz
 cd MLNX_OFED_LINUX-5.5-1.0.3.2-ubuntu20.04-x86_64
 
 sudo ./mlnxofedinstall --upstream-libs
-sudo /etc/init.d/openibd restart
+# sudo /etc/init.d/openibd restart
 
 # Install Mellanxo IRQ affinity tools if needed. Modern OFED often includes these tools.
 if ! [ -x "`command -v set_irq_affinity_bynode.sh`" ]; then

@@ -3,17 +3,18 @@
 cd "$(dirname "$0")"
 
 . ../shared.sh
-IFACE=$(get_iface)
-IFACE_CX5=$(get_cx5_iface)
+# IFACE=$(get_iface)
+# IFACE_CX5=$(get_cx5_iface)
+IFACE=ens1f0
 
 declare -A HOST2IP=(
-    ["yeti-04"]="10.0.0.101"
-    ["yak-03"]="10.0.0.102"
+    ["node2"]="10.0.0.101"
+    ["node1"]="10.0.0.102"
 )
 
 declare -A HOST2MAC=(
-    ["yeti-04"]="ec:0d:9a:68:21:a8"
-    ["yak-03"]="ec:0d:9a:68:21:c0"
+    ["node2"]="ec:0d:9a:68:21:a8"
+    ["node1"]="ec:0d:9a:68:21:c0"
 )
 
 MY_HOST=$(hostname -s)
@@ -78,7 +79,7 @@ set_cpu_high_performance()
     echo 'GOVERNOR="performance"' | sudo tee /etc/default/cpufrequtils > /dev/null
     sudo cpufreq-set -r -g performance
     # It seems that we also need to manually set it for each CPU
-    echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor
+    echo performance | sudo tee /sys/devices/system/cpu/cpu*/cpufreq/scaling_governor #TODO:There was an error from this in cloudlab. Check later.
     sudo systemctl disable ondemand
     echo "Done"
     echo
@@ -151,7 +152,8 @@ disable_daemon_processes()
 
 set_mellanox_cx5_pci_settings()
 {
-    pcidevice=$(lspci | grep -i ethernet | grep "ConnectX-5" | cut -d' ' -f 1)
+    # pcidevice=$(lspci | grep -i ethernet | grep "ConnectX-5" | cut -d' ' -f 1)
+    pcidevice=$(sudo lshw -c network -businfo | grep $IFACE | cut -d' ' -f 1 | cut -c 10-)
     maxreadreq_size=$(sudo lspci -s $pcidevice -vvv | grep MaxReadReq | regex 'MaxReadReq ([0-9]+) bytes' 1)
     if [[ $maxreadreq_size -lt 4096 ]]; then
         echo "Current MaxReadReq is $maxreadreq_size, setting to 4096 ..."
@@ -220,14 +222,14 @@ main()
     # sudo ethtool --set-priv-flags $IFACE sniffer off
     sudo ip link set $IFACE mtu $MTU
 
-    # performance tuning
+    performance tuning
     set_cpu_high_performance
     # disable_hyperthreading
     enable_hyperthreading
     disable_daemon_processes
 
-    if [[ "$IFACE" == "$IFACE_CX5" ]]; then
-        # set_mlnx_qos
+    if [[ "$IFACE" == "ens1f0" ]]; then
+        set_mlnx_qos
         set_mellanox_cx5_pci_settings
         reset_nic_irq_mapping
         mellanox_perf_tuning
@@ -235,8 +237,8 @@ main()
         # Explicitly turning off TSO for now, for fair comparison between CX-5 and Corundum
         sudo ethtool -K $IFACE tso off
         sudo ethtool -K $IFACE gso on
-    else
-        sudo ethtool -K $IFACE gso on
+    # else
+    #     sudo ethtool -K $IFACE gso on
     fi
 }
 
