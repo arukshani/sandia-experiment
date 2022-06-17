@@ -4,10 +4,11 @@ cd "$(dirname "$0")"
 
 TOTAL_RULES_GROUPS=1
 
-source ../shared.sh
-IFACE=$(get_iface)
-IFACE_CX5=$(get_cx5_iface)
-[[ "$IFACE" == "$IFACE_CX5" ]] && ip_octet3=1 || ip_octet3=2
+# source ../shared.sh
+# IFACE=$(get_iface)
+# IFACE_CX5=$(get_cx5_iface)
+IFACE=ens1f0
+[[ "$IFACE" == "ens1f0" ]] && ip_octet3=1 || ip_octet3=2
 
 for arg in "$@"
 do
