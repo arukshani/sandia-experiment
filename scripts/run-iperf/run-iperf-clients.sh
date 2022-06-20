@@ -29,9 +29,10 @@ regex () {
     gawk 'match($0,/'$1'/, ary) {print ary['${2:-'0'}']}'
 }
 
-source ../shared.sh
-IFACE=$(get_iface)
-IFACE_CX5=$(get_cx5_iface)
+# source ../shared.sh
+# IFACE=$(get_iface)
+# IFACE_CX5=$(get_cx5_iface)
+IFACE=ens1f0
 
 nic_local_numa_node=$(cat /sys/class/net/$IFACE/device/numa_node)
 
