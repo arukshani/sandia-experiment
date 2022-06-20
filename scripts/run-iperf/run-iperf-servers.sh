@@ -15,8 +15,9 @@ case $arg in
 esac
 done
 
-source ../shared.sh
-IFACE=$(get_iface)
+# source ../shared.sh
+# IFACE=$(get_iface)
+IFACE=ens1f0
 
 nic_local_numa_node=$(cat /sys/class/net/$IFACE/device/numa_node)
 
