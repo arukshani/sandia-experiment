@@ -222,7 +222,7 @@ main()
     # sudo ethtool --set-priv-flags $IFACE sniffer off
     sudo ip link set $IFACE mtu $MTU
 
-    performance tuning
+    #performance tuning
     set_cpu_high_performance
     # disable_hyperthreading
     enable_hyperthreading
