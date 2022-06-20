@@ -4,9 +4,10 @@ cd "$(dirname "$0")"
 
 TOTAL_IP_GROUPS=1
 
-source ../shared.sh
-IFACE=$(get_iface)
-IFACE_CX5=$(get_cx5_iface)
+# source ../shared.sh
+# IFACE=$(get_iface)
+# IFACE_CX5=$(get_cx5_iface)
+IFACE=ens1f0
 [[ "$IFACE" == "$IFACE_CX5" ]] && ip_octet3=1 || ip_octet3=2
 
 for arg in "$@"
