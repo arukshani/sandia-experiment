@@ -34,8 +34,8 @@ for i in $(seq 0 $MAX_IP); do
 done
 
 echo "Reseting qdisc to default ..."
-sudo tc qdisc del dev $IFACE root
-sudo tc qdisc del dev $IFACE clsact
+# sudo tc qdisc del dev $IFACE root
+# sudo tc qdisc del dev $IFACE clsact (Cloudlab Had to do this manually)
 
 # Initially, `multiq` was used in combination with skbedit according to
 #   https://www.kernel.org/doc/Documentation/networking/multiqueue.txt
@@ -49,7 +49,7 @@ fi
 # However, we found the performance to be limited to using a single core,
 #   so we switched to `clsact` as suggested here:
 #   https://www.spinics.net/lists/netdev/msg365702.html
-sudo tc qdisc add dev $IFACE clsact
+# sudo tc qdisc add dev $IFACE clsact (Cloudlab Had to do this manually)
 
 ip_octet3=1
 # See queue_mapping in https://man7.org/linux/man-pages/man8/tc-skbedit.8.html
