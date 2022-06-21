@@ -61,7 +61,14 @@ run_arp()
 
 set_mlnx_qos()
 {
-    sudo cma_roce_tos -d mlx5_0 -t 0
+    #TODO:cloudlab ibdev2netdev output
+    # mlx5_0 port 1 ==> enp1s0f0 (Up)
+    # mlx5_1 port 1 ==> enp1s0f1 (Down)
+    # mlx5_2 port 1 ==> ens1f0 (Up)
+    # mlx5_3 port 1 ==> ens1f1 (Down)
+
+    # sudo cma_roce_tos -d mlx5_0 -t 0
+    sudo cma_roce_tos -d mlx5_2 -t 0 
     sudo mlnx_qos -i $IFACE -p 0,1,2,3,4,5,6,7 \
                     -f 1,1,0,0,0,0,0,0 \
                     --buffer_size 261632,261632,0,0,0,0,0,0 \
