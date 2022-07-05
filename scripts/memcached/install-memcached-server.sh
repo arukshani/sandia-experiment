@@ -15,10 +15,3 @@ local_ip=$(ifconfig | grep -A1 $IFACE | grep inet | awk '{{print $2}}')
 
 #Change the ip to use the local private network
 sudo sed -i -e "s/\(-l\).*/\1 $local_ip/" /etc/memcached.conf
-
-#Start memcached server
-sudo systemctl restart memcached
-
-#Check your new settings with ss to confirm the change:
-output=$(sudo ss -plunt | grep memcached)
-echo $output
