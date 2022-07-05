@@ -3,9 +3,9 @@
 cwd="$(pwd)"
 cd "$(dirname "$0")"
 
-# sudo apt update
-# sudo apt install memcached
-# sudo apt install libmemcached-tools
+sudo apt update
+sudo apt install memcached
+sudo apt install libmemcached-tools
 
 IFACE=ens1f0
 local_ip=$(ifconfig | grep -A1 $IFACE | grep inet | awk '{{print $2}}')
