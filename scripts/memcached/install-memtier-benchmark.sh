@@ -14,3 +14,4 @@ make
 sudo make install
 
 #memtier_benchmark --help
+#memtier_benchmark -s 192.168.1.2 -p 11211 -P memcache_text --show-config
