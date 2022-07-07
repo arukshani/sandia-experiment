@@ -36,12 +36,12 @@ do
     port=$(echo "11211+$i" | bc)
     current_server=$server
     if [[ $USE_SEPARATE_SERVER -eq 1 ]]; then
-        echo >&2 "Using separate servers ..."
+        # echo >&2 "Using separate servers ..."
         IFS='.' read ip1 ip2 ip3 ip4 <<< "$server"
         ip2=$(echo "1 + ($i - 1) / 32" | bc)
         ip4=$(echo "$ip4 + ($i - 1) % 32 + 1" | bc)
         current_server="$ip1.$ip2.$ip3.$ip4"
-        echo >&2 "\t$i-th server: $current_server"
+        # echo >&2 "\t$i-th server: $current_server"
         server_port_pair+="$current_server:$port,"
     fi
 done
@@ -49,7 +49,11 @@ done
 echo $server_port_pair
 memcached -l $server_port_pair &
 
+#Check your new settings with ss to confirm the change:
+output=$(sudo ss -plunt | grep memcached)
+echo $output
+
 # memcached -l 10.1.2.231:11211,10.1.2.232:11212
 
-#./scripts/memcached/start-multiple-instances-mem.sh -p 2 -s 10.1.2.200 --separate-servers
+#./scripts/memcached/start-multiple-memcached-instances.sh -p 2 -s 10.1.2.200 --separate-servers
 
