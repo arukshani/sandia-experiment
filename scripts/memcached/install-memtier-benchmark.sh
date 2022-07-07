@@ -24,3 +24,4 @@ sudo make install
 #STAT curr_items 19976 (Current number of items stored)
 #STAT total_items 2000000 (Total number of items stored since the server started)
 # Object data size (default: 32)
+#Key size: 9~16Bytes 
