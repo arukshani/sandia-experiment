@@ -14,4 +14,13 @@ make
 sudo make install
 
 #memtier_benchmark --help
-#memtier_benchmark -s 192.168.1.2 -p 11211 -P memcache_text --show-config
+
+#populate memcached with items (only write requests)
+#memtier_benchmark -s 192.168.1.2 -p 11211 -P memcache_text --show-config --ratio=1:0 --requests 20000
+
+#only read requests
+#memtier_benchmark -s 192.168.1.2 -p 11211 -P memcache_text --show-config --ratio=0:1
+
+#STAT curr_items 19976 (Current number of items stored)
+#STAT total_items 2000000 (Total number of items stored since the server started)
+# Object data size (default: 32)
