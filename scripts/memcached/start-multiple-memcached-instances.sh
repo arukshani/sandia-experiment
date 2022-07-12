@@ -55,5 +55,5 @@ echo $output
 
 # memcached -l 10.1.2.231:11211,10.1.2.232:11212
 
-#./scripts/memcached/start-multiple-memcached-instances.sh -p 2 -s 10.1.2.200 --separate-servers
+#./scripts/memcached/start-multiple-memcached-instances.sh -p 32 -s 10.1.2.200 --separate-servers
 
