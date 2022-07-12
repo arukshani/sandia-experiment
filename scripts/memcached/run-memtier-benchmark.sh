@@ -2,7 +2,7 @@
 
 #Only read requests
 #memtier_benchmark -s 192.168.1.2 -p 11211 -P memcache_text --show-config --ratio=0:1
-# ./scripts/memcached/run-memtier-benchmark.sh -s 10.1.2.200 -p 2 --separate-servers
+# ./scripts/memcached/run-memtier-benchmark.sh -s 10.1.2.200 -p 32 --separate-servers
 
 parallelism=1
 server=127.0.0.1
@@ -43,7 +43,7 @@ for i in $(seq 1 $parallelism); do
         logname="memt-$ip4.json"
         echo >&2 "\t$i-th server: $current_server  port: $port"
     fi
-    memtier_benchmark -s $current_server -p $port -P memcache_text --ratio=0:1 --json-out-file=$logname &
+    memtier_benchmark -s $current_server -p $port -P memcache_text --ratio=0:1 -t 1 -c 30 -n 10000 --json-out-file=$logname &
 done
 )
 
