@@ -11,6 +11,7 @@ timestamp=$(date +%d-%m-%Y_%H-%M-%S)
 threads=1
 clients_per_thread=20
 requests_per_client=10000
+TAR_FILENAME="memt-t$threads-c$clients_per_thread-r$requests_per_client-$timestamp.tar"
 
 parallelism=1
 server=127.0.0.1
@@ -57,3 +58,8 @@ done
 )
 
 # echo $output 
+
+cd /tmp/data-tmp && tar -czf $TAR_FILENAME $(cd /tmp/data-tmp && ls | grep $timestamp 2> /dev/null)
+# rm -f /tmp/data-tmp/*$timestamp* !(TAR_FILENAME)
+find . -type f ! -name "*$timestamp.tar" -exec rm -rf {} \;
+# cd /tmp/ && rm -f $LOGS
