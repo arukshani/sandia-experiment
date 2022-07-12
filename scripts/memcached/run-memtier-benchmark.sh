@@ -4,6 +4,14 @@
 #memtier_benchmark -s 192.168.1.2 -p 11211 -P memcache_text --show-config --ratio=0:1
 # ./scripts/memcached/run-memtier-benchmark.sh -s 10.1.2.200 -p 32 --separate-servers
 
+mkdir -p /tmp/data-tmp
+tmp_folder='/tmp/data-tmp'
+timestamp=$(date +%d-%m-%Y_%H-%M-%S)
+
+threads=1
+clients_per_thread=20
+requests_per_client=10000
+
 parallelism=1
 server=127.0.0.1
 
@@ -40,10 +48,11 @@ for i in $(seq 1 $parallelism); do
         ip2=$(echo "1 + ($i - 1) / 32" | bc)
         ip4=$(echo "$ip4 + ($i - 1) % 32 + 1" | bc)
         current_server="$ip1.$ip2.$ip3.$ip4"
-        logname="memt-$ip4.json"
+        logname="$tmp_folder/memt-$ip4-$timestamp.json"
+        hdrprefix="$tmp_folder/memt-$ip4-$timestamp"
         echo >&2 "\t$i-th server: $current_server  port: $port"
     fi
-    memtier_benchmark -s $current_server -p $port -P memcache_text --ratio=0:1 -t 1 -c 30 -n 10000 --json-out-file=$logname &
+    memtier_benchmark -s $current_server -p $port -P memcache_text --ratio=0:1 -t $threads -c $clients_per_thread -n $requests_per_client --json-out-file=$logname --hdr-file-prefix=$hdrprefix &
 done
 )
 
